@@ -21,9 +21,16 @@ body {
 
 div {
     white-space: pre-wrap;
+    width: 100%;
+    margin: 10px;
+    text-align: center;
  }
 
  @font-face{
   font-family:'digital-clock-font';
   src: url('digital-7 (mono).ttf');
  }
+
+ #list::first-line {
+  font-size: 20px;
+}

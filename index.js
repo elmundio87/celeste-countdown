@@ -26,19 +26,32 @@ function go(){
       var line = lines[i].replace('🌠 ','')
       var times = line.split(', ')
       for(var j = 0;j < times.length;j++){
-        out_times.push(times[j])
+        if(!(meteorExpired(times[j]))){
+          out_times.push(times[j])
+        }
       }
     }
   }
-  console.log(out_times)
 
   window.setInterval(function(){
     go2()
-  }, 10);
+  }, 500);
 
   $("button").hide()
   $("textarea").hide()
+}
 
+
+function meteorExpired(time){
+  var timeSplit = time.split(':')
+
+  var today = new Date()
+  var nextTimeDate = new Date()
+  nextTimeDate.setHours(timeSplit[0])
+  nextTimeDate.setMinutes(timeSplit[1])
+  nextTimeDate.setSeconds(timeSplit[2])
+
+  return ((nextTimeDate.getTime() - today.getTime()) <= 0)
 }
 
 function go2(){
@@ -61,7 +74,5 @@ function go2(){
   }
 
   $("#list").text(out_times.join("\n"))
-
-
 
 }
