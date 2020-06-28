@@ -25,7 +25,7 @@ jobs:
     - name: Azure Static Website
       uses: tibor19/static-website-deploy@v1
       with:
-        connection-string: "{{ secret.AZURE_CREDENTIALS }}"
+        connection-string: ${{ secret.AZURE_CREDENTIALS }}
         blob-container-name: $web
         enabled-static-website: true
         index-file: index.html
