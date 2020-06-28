@@ -19,7 +19,7 @@ function msToHMS( duration ) {
    return hours + ":" + minutes + ":" + seconds ;
 }
 
-function go(){
+function main(){
   var lines = $('textarea').val().split('\n');
   for(var i = 0;i < lines.length;i++){
     if(lines[i].startsWith('🌠')){
@@ -34,11 +34,11 @@ function go(){
   }
 
   window.setInterval(function(){
-    go2()
+    countdown()
   }, 500);
 
-  $("button").hide()
-  $("textarea").hide()
+  $("#data").hide()
+  $("#countdown").show()
 }
 
 
@@ -54,8 +54,7 @@ function meteorExpired(time){
   return ((nextTimeDate.getTime() - today.getTime()) <= 0)
 }
 
-function go2(){
-  var nextTime = out_times[0]
+function getTimeDifference(nextTime) {
   var nextTimeSplit = nextTime.split(':')
 
   var today = new Date()
@@ -64,15 +63,25 @@ function go2(){
   nextTimeDate.setMinutes(nextTimeSplit[1])
   nextTimeDate.setSeconds(nextTimeSplit[2])
 
-  diff = (nextTimeDate.getTime() - today.getTime() ) / 1000
+  return (nextTimeDate.getTime() - today.getTime() ) / 1000
 
-  if(diff <= 0){
-    out_times.remove(0)
-    $('#countdown').text("00:00:00")
+}
+
+function countdown(){
+  if(out_times.length > 0){
+    time_difference = getTimeDifference(out_times[0])
+    if(time_difference <= 0){
+      out_times.remove(0)
+      $('#clock').text("00:00:00")
+    } else {
+      $('#clock').text(msToHMS(Math.round(Math.abs(time_difference)) * 1000))
+    }
+    var list = out_times.map(function(currentValue){
+      return "<li>" + currentValue + " (+" + getTimeDifference(currentValue) + "s)</li>"
+    })
+    $("#upcoming ol").html(list.join("\n"))
   } else {
-    $('#countdown').text(msToHMS(Math.round(Math.abs(diff)) * 1000))
+    $("#upcoming ol").html("<li>No more shooting stars!</li>")
   }
-
-  $("#list").text(out_times.join("\n"))
 
 }

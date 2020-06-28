@@ -1,0 +1,25 @@
+#clock {
+  font-size: 100px;
+  font-family: digital-clock-font;
+  text-align: center;
+}
+
+#countdown {
+  border: 1px black solid;
+  width: 500px;
+  padding: 15px;
+  margin: 15px;
+  border-radius: 15px;
+}
+
+#celeste {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  height: 250px;
+}
+
+@font-face{
+  font-family:'digital-clock-font';
+  src: url('digital-7 (mono).ttf');
+}
