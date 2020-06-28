@@ -9,7 +9,7 @@
   <body>
     <h1>Celeste Countdown</h1>
     <div>
-      <p>Track incoming shooting stars in Animal Crossing: New Horizons</p>
+      <p>Track incoming shooting stars in Animal Crossing: New Horizons.</p>
     </div>
     <div id="countdown" style="display:none">
       <div id="clock-title">Next shooting star in:</div>
@@ -17,7 +17,7 @@
       <div>Time Adjustment: <input id="time_offset" type="number" value="0"></input> seconds.</div>
       <div>Use this if your Switch time is out of sync.</div>
     </div>
-    <div id="upcoming">
+    <div id="upcoming" style="display:none">
       <h3>Upcoming shooting stars</h3>
       <ol>
 
@@ -34,7 +34,7 @@
         <li>Copy all the text from the popup and paste into the box below;</li>
       </ol>
       <div>
-        <textarea rows=10 cols=100></textarea>
+        <textarea rows=10 cols=40></textarea>
       </div>
 
       <button onClick="main()">Start countdown</button>

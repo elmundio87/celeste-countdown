@@ -39,6 +39,7 @@ function main(){
 
   $("#data").hide()
   $("#countdown").show()
+  $("#upcoming").show()
 }
 
 
