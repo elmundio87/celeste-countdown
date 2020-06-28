@@ -42,10 +42,19 @@ function main(){
 }
 
 
+function getTodayWithOffset(){
+  var tempToday = new Date()
+  var offset = $("#time_offset").val()
+  if(isNaN(offset)){
+    offset = 0
+  }
+  return new Date(tempToday.getTime() + (offset * 1000))
+}
+
 function meteorExpired(time){
   var timeSplit = time.split(':')
 
-  var today = new Date()
+  var today = getTodayWithOffset()
   var nextTimeDate = new Date()
   nextTimeDate.setHours(timeSplit[0])
   nextTimeDate.setMinutes(timeSplit[1])
@@ -54,10 +63,10 @@ function meteorExpired(time){
   return ((nextTimeDate.getTime() - today.getTime()) <= 0)
 }
 
-function getTimeDifference(nextTime) {
+function getTimeDifference(nextTime, timeOffset) {
   var nextTimeSplit = nextTime.split(':')
 
-  var today = new Date()
+  var today = getTodayWithOffset()
   var nextTimeDate = new Date()
   nextTimeDate.setHours(nextTimeSplit[0])
   nextTimeDate.setMinutes(nextTimeSplit[1])
@@ -68,6 +77,7 @@ function getTimeDifference(nextTime) {
 }
 
 function countdown(){
+  var timeOffset = $("#time_offset").val()
   if(out_times.length > 0){
     time_difference = getTimeDifference(out_times[0])
     if(time_difference <= 0){
@@ -77,7 +87,7 @@ function countdown(){
       $('#clock').text(msToHMS(Math.round(Math.abs(time_difference)) * 1000))
     }
     var list = out_times.map(function(currentValue){
-      return "<li>" + currentValue + " (+" + getTimeDifference(currentValue) + "s)</li>"
+      return "<li>" + currentValue + " (+" + Math.round(Math.abs(getTimeDifference(currentValue))) + "s)</li>"
     })
     $("#upcoming ol").html(list.join("\n"))
   } else {

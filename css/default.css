@@ -13,10 +13,11 @@
 }
 
 #celeste {
-  position: absolute;
+  position: fixed;
   bottom: 20px;
   right: 20px;
   height: 250px;
+  opacity: 0.5;
 }
 
 @font-face{
