@@ -1,0 +1,28 @@
+{
+  "name": "celeste-countdown",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "git+https://github.com/elmundio87/celeste-countdown.git",
+  "keywords": [],
+  "author": "Edmund Dipple <elmundio1987@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/elmundio87/celeste-countdown/issues"
+  },
+  "homepage": "https://github.com/elmundio87/celeste-countdown#readme",
+  "dependencies": {
+    "grunt": "^1.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "@babel/preset-react": "^7.10.1",
+    "grunt-babel": "^8.0.0",
+    "grunt-contrib-connect": "^2.1.0",
+    "grunt-contrib-watch": "^1.1.0"
+  }
+}

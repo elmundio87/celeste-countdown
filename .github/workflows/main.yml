@@ -25,6 +25,15 @@ jobs:
     - name: Remove .git and .github folders
       run: rm -rf .git .github
 
+    - name: Install modules
+      run: npm install
+
+    - name: Install Grunt
+      run: npm install -g grunt
+
+    - name: Generate assets
+      run: grunt
+
     - name: Azure Static Website
       uses: tibor19/static-website-deploy@v1
       with:

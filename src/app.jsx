@@ -1,5 +1,7 @@
 var out_times = []
 
+const e = React.createElement
+
 // Remove element at the given index
 Array.prototype.remove = function(index) {
   this.splice(index, 1);
@@ -78,21 +80,58 @@ function getTimeDifference(nextTime, timeOffset) {
 }
 
 function countdown(){
-  var timeOffset = $("#time_offset").val()
+  var time_difference = 0
+  var clockNode = document.querySelector('#clock')
+  var listNode = document.querySelector('#upcoming ol')
   if(out_times.length > 0){
     time_difference = getTimeDifference(out_times[0])
     if(time_difference <= 0){
       out_times.remove(0)
-      $('#clock').text("00:00:00")
-    } else {
-      $('#clock').text(msToHMS(Math.round(Math.abs(time_difference)) * 1000))
     }
-    var list = out_times.map(function(currentValue){
-      return "<li>" + currentValue + " (+" + Math.round(Math.abs(getTimeDifference(currentValue))) + "s)</li>"
-    })
-    $("#upcoming ol").html(list.join("\n"))
-  } else {
-    $("#upcoming ol").html("<li>No more shooting stars!</li>")
+  }
+  ReactDOM.render(
+    e(Clock, { time: time_difference }),
+    clockNode
+  );
+  ReactDOM.render(
+    e(UpcomingShootingStar, { times: out_times }),
+    listNode
+  );
+
+}
+
+class Clock extends React.Component {
+  constructor(props) {
+    super(props)
   }
 
+  render() {
+    return msToHMS(Math.round(Math.abs(this.props.time)) * 1000)
+  }
+
+}
+
+class UpcomingShootingStar extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    var times = this.props.times
+
+    if(times.length > 0){
+      list = times.map(function(currentValue){
+        return <li>
+          { currentValue } ({ Math.round(Math.abs(getTimeDifference(currentValue))) }s)
+        </li>
+      })
+      return list
+    } else {
+      return (
+        <li>
+          No more shooting stars!
+        </li>
+      )
+    }
+  }
 }
