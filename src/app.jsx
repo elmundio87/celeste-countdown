@@ -11,11 +11,11 @@ const upcomingTimes = []
 
 // Remove element at the given index
 // eslint-disable-next-line no-extend-native
-Array.prototype.remove = function (index) {
+Array.prototype.remove = (index) => {
   this.splice(index, 1)
 }
 
-function msToHMS (duration) {
+const msToHMS = (duration) => {
   let seconds = parseInt((duration / 1000) % 60)
   let minutes = parseInt((duration / (1000 * 60)) % 60)
   let hours = parseInt((duration / (1000 * 60 * 60)) % 24)
@@ -30,20 +30,17 @@ function msToHMS (duration) {
 // eslint-disable-next-line no-unused-vars
 const main = () => {
   const lines = $('textarea').val().split('\n')
-  const offset = $('#time_offset').val()
   for (var i = 0; i < lines.length; i++) {
     if (lines[i].startsWith('🌠')) {
       var line = lines[i].replace('🌠 ', '')
       var times = line.split(', ')
       for (var j = 0; j < times.length; j++) {
-        if (!(meteorExpired(times[j], offset))) {
-          upcomingTimes.push(times[j])
-        }
+        upcomingTimes.push(times[j])
       }
     }
   }
 
-  window.setInterval(function () {
+  window.setInterval(() => {
     countdown()
   }, 500)
 
@@ -76,16 +73,8 @@ const getTimeDifference = (nextTime, offset) => {
 }
 
 const countdown = () => {
-  let timeDifference = 0
-  const offset = $('#time_offset').val()
-  if (upcomingTimes.length > 0) {
-    timeDifference = getTimeDifference(upcomingTimes[0], offset)
-    if (timeDifference <= 0) {
-      upcomingTimes.remove(0)
-    }
-  }
   ReactDOM.render(
-    e(Clock, { time: timeDifference }),
+    e(Clock, { times: upcomingTimes }),
     document.querySelector('#clock')
   )
   ReactDOM.render(
@@ -96,7 +85,15 @@ const countdown = () => {
 
 class Clock extends React.Component {
   render () {
-    return msToHMS(Math.round(Math.abs(this.props.time)) * 1000)
+    const upcomingTimes = this.props.times
+    const offset = $('#time_offset').val()
+    for (var i = 0; i < upcomingTimes.length; i++) {
+      if (!meteorExpired(upcomingTimes[i], offset)) {
+        const timeDifference = getTimeDifference(upcomingTimes[i], offset)
+        return msToHMS(Math.round(Math.abs(timeDifference)) * 1000)
+      }
+    }
+    return '00:00:00'
   }
 }
 
@@ -104,20 +101,23 @@ class UpcomingShootingStar extends React.Component {
   render () {
     const times = this.props.times
     const offset = $('#time_offset').val()
-    let list = []
-    if (times.length > 0) {
-      list = times.map(function (currentValue) {
-        return <li key={currentValue}>
-          { currentValue } ({ Math.round(Math.abs(getTimeDifference(currentValue, offset))) }s)
-        </li>
-      })
-    } else {
-      list = (
+    const tempTimes = times.filter((currentValue) => {
+      const timeDifference = getTimeDifference(currentValue, offset)
+      return timeDifference > 0
+    })
+
+    if (tempTimes.length === 0) {
+      return (
         <li>
           No more shooting stars!
         </li>
       )
     }
-    return list
+
+    return tempTimes.map((currentValue) => {
+      return <li key={currentValue}>
+        { currentValue } ({ Math.round(Math.abs(getTimeDifference(currentValue, offset))) }s)
+      </li>
+    })
   }
 }
