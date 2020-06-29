@@ -15,6 +15,12 @@ Array.prototype.remove = (index) => {
   this.splice(index, 1)
 }
 
+Date.prototype.addDays = function(days) {
+  var date = new Date(this.valueOf());
+  date.setDate(date.getDate() + days);
+  return date;
+}
+
 const msToHMS = (duration) => {
   let seconds = parseInt((duration / 1000) % 60)
   let minutes = parseInt((duration / (1000 * 60)) % 60)
@@ -64,10 +70,14 @@ const meteorExpired = (time, offset) => {
 const getTimeDifference = (nextTime, offset) => {
   const nextTimeSplit = nextTime.split(':')
   const today = getTodayWithOffset(offset)
-  const nextTimeDate = new Date()
+  let nextTimeDate = new Date()
   nextTimeDate.setHours(nextTimeSplit[0])
   nextTimeDate.setMinutes(nextTimeSplit[1])
   nextTimeDate.setSeconds(nextTimeSplit[2])
+
+  if (nextTimeSplit[0] <= 5) {
+    nextTimeDate = nextTimeDate.addDays(1)
+  }
 
   return (nextTimeDate.getTime() - today.getTime()) / 1000
 }
