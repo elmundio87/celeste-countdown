@@ -22,14 +22,15 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    - name: Remove .git and .github folders
-      run: rm -rf .git .github
 
     - name: Install modules
       run: npm install
 
     - name: Generate assets
       run: npm run build
+    
+    - name: Remove .git and .github folders
+      run: rm -rf .git .github node_modules
 
     - name: Azure Static Website
       uses: tibor19/static-website-deploy@v1
