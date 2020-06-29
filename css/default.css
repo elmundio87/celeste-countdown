@@ -59,6 +59,9 @@ body {
     background-color: rgb(21, 32, 43);
     color: #FFF;
   }
+  #countdown {
+    border-color: #FFF;
+  }
   a {
     color: limegreen;
   }

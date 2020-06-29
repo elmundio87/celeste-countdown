@@ -1,10 +1,9 @@
-module.exports = function(grunt) {
-
+module.exports = function (grunt) {
   grunt.initConfig({
     babel: {
       options: {
         sourceMap: true,
-        "presets": ["@babel/preset-react"]
+        presets: ['@babel/preset-react']
       },
       dist: {
         files: {
@@ -13,30 +12,29 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-			src: {
-				files: ['src/**/*.js', 'src/**/*.jsx', '!dist/app.js'],
-				tasks: ['babel'],
-				options: {
-					livereload: true
-				}
-			}
-		},
-		connect: {
-			dev: {
-				options: {
-					hostname: 'localhost',
-					port: 7012,
-					open: true
-				}
-			}
-		}
-  });
+      src: {
+        files: ['src/**/*.js', 'src/**/*.jsx', '!dist/app.js'],
+        tasks: ['babel'],
+        options: {
+          livereload: true
+        }
+      }
+    },
+    connect: {
+      dev: {
+        options: {
+          hostname: 'localhost',
+          port: 7012,
+          open: true
+        }
+      }
+    }
+  })
 
-  grunt.loadNpmTasks('grunt-babel');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-babel')
+  grunt.loadNpmTasks('grunt-contrib-watch')
+  grunt.loadNpmTasks('grunt-contrib-connect')
 
-  grunt.registerTask('dev', ['babel', 'connect', 'watch']);
-  grunt.registerTask('default', ['babel']);
-
+  grunt.registerTask('dev', ['babel', 'connect', 'watch'])
+  grunt.registerTask('default', ['babel'])
 }
