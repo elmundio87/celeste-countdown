@@ -75,8 +75,12 @@ const getTimeDifference = (nextTime, offset) => {
   nextTimeDate.setMinutes(nextTimeSplit[1])
   nextTimeDate.setSeconds(nextTimeSplit[2])
 
-  if (nextTimeSplit[0] <= 5) {
+  if (nextTimeSplit[0] < 5 && today.getHours() >= 5) {
     nextTimeDate = nextTimeDate.addDays(1)
+  }
+
+  if (nextTimeSplit[0] > 5 && today.getHours() < 5) {
+    nextTimeDate = nextTimeDate.addDays(-1)
   }
 
   return (nextTimeDate.getTime() - today.getTime()) / 1000
