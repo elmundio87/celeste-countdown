@@ -25,14 +25,12 @@ const parseShootingStarData = (lines) => {
   var times
   var i, j
   for (i = 0; i < lines.length; i++) {
-    if (lines[i].replace(' ', '').startsWith('🌠')) {
-      var line = lines[i].replace('🌠', '').replace(' ', '')
+    if (lines[i].replace(/ /g, '').startsWith('🌠')) {
+      var line = lines[i].replace('🌠', '').replace(/ /g, '')
       if (line.includes('-')) { // New Meteonook format in rewrite
-        times = line.replace('-', '').split(',')
-        var hour = times[0].split(':')[0]
-        upcomingTimes.push(times[0])
+        times = line.replace('-', ',').split(',')
         for (j = 1; j < times.length; j++) {
-          upcomingTimes.push(hour + times[j])
+          upcomingTimes.push(times[0] + times[j])
         }
       } else {
         times = line.split(',')
