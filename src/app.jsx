@@ -9,18 +9,6 @@ const e = React.createElement
 
 const upcomingTimes = []
 
-// Remove element at the given index
-// eslint-disable-next-line no-extend-native
-Array.prototype.remove = (index) => {
-  this.splice(index, 1)
-}
-
-Date.prototype.addDays = function(days) {
-  var date = new Date(this.valueOf());
-  date.setDate(date.getDate() + days);
-  return date;
-}
-
 const msToHMS = (duration) => {
   let seconds = parseInt((duration / 1000) % 60)
   let minutes = parseInt((duration / (1000 * 60)) % 60)
@@ -33,18 +21,34 @@ const msToHMS = (duration) => {
   return [hours, minutes, seconds].join(':')
 }
 
-// eslint-disable-next-line no-unused-vars
-const main = () => {
-  const lines = $('textarea').val().split('\n')
-  for (var i = 0; i < lines.length; i++) {
-    if (lines[i].startsWith('🌠')) {
-      var line = lines[i].replace('🌠 ', '')
-      var times = line.split(', ')
-      for (var j = 0; j < times.length; j++) {
-        upcomingTimes.push(times[j])
+const parseShootingStarData = (lines) => {
+  var times
+  var i, j
+  for (i = 0; i < lines.length; i++) {
+    if (lines[i].replace(' ', '').startsWith('🌠')) {
+      var line = lines[i].replace('🌠', '').replace(' ', '')
+      if (line.includes('-')) { // New Meteonook format in rewrite
+        times = line.replace('-', '').split(',')
+        var hour = times[0].split(':')[0]
+        upcomingTimes.push(times[0])
+        for (j = 1; j < times.length; j++) {
+          upcomingTimes.push(hour + times[j])
+        }
+      } else {
+        times = line.split(',')
+        for (j = 0; j < times.length; j++) {
+          upcomingTimes.push(times[j])
+        }
       }
     }
   }
+}
+
+// eslint-disable-next-line no-unused-vars
+const main = () => {
+  const lines = $('textarea').val().split('\n')
+
+  parseShootingStarData(lines)
 
   window.setInterval(() => {
     countdown()
@@ -70,17 +74,17 @@ const meteorExpired = (time, offset) => {
 const getTimeDifference = (nextTime, offset) => {
   const nextTimeSplit = nextTime.split(':')
   const today = getTodayWithOffset(offset)
-  let nextTimeDate = new Date()
+  const nextTimeDate = new Date()
   nextTimeDate.setHours(nextTimeSplit[0])
   nextTimeDate.setMinutes(nextTimeSplit[1])
   nextTimeDate.setSeconds(nextTimeSplit[2])
 
   if (nextTimeSplit[0] < 5 && today.getHours() >= 5) {
-    nextTimeDate = nextTimeDate.addDays(1)
+    nextTimeDate.setDate(nextTimeDate.getDate() + 1)
   }
 
   if (nextTimeSplit[0] > 5 && today.getHours() < 5) {
-    nextTimeDate = nextTimeDate.addDays(-1)
+    nextTimeDate.setDate(nextTimeDate.getDate() - 1)
   }
 
   return (nextTimeDate.getTime() - today.getTime()) / 1000
