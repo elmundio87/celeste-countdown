@@ -3,7 +3,7 @@ module.exports = function (grunt) {
     babel: {
       options: {
         sourceMap: true,
-        presets: ['@babel/preset-react']
+        presets: ['@babel/preset-env', '@babel/preset-react']
       },
       dist: {
         files: {
